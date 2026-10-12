@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#554698">
+<meta name="description" content="输入两个参考功率，生成光的偏振实验的两张仿真表。电脑和手机均可查看全部数据。">
+<title>光的偏振 · 两表仿真</title>
+<link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css">
+</head>
+<body><main>
+<header><span class="tag">竞赛仿真</span><h1>光的偏振 · 两表仿真</h1><p>输入两个参考功率，生成历届报告中的两张表。</p></header>
+<section class="panel">
+<form id="form" novalidate>
+<div class="powers">
+<label>第一表：θ = 0° 的功率<input id="p0" name="p0" type="number" inputmode="decimal" min="0" step="any" value="1400" required></label>
+<label>第二表：参考格的功率<input id="p2" name="p2" type="number" inputmode="decimal" min="0" step="any" value="900" required><small id="anchor-description">默认：波片 γ=90°、检偏器 β=0°（最大功率）。</small></label>
+</div>
+<details><summary>可选设置（一般不用改）</summary><div class="settings">
+<label>报告版式<select id="profile" name="profile"><option value="full">完整版：7×12，0°～330°</option><option value="closed">含360°：7×13，0°～360°</option><option value="compact">简表：7×4</option></select></label>
+<label>功率单位<select id="unit" name="unit"><option>相对读数</option><option>mW</option><option>μW</option></select></label>
+<label>参考格：波片行 γ<select id="anchorGamma" name="anchorGamma"></select></label>
+<label>参考格：检偏列 β<select id="anchorBeta" name="anchorBeta"></select></label>
+<label>随机扰动标准差（%）<input id="noisePct" name="noisePct" type="number" inputmode="decimal" min="0" max="20" step="0.1" value="0"></label>
+<label>小数位数<select id="digits" name="digits"><option value="0">0（整数）</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>
+<label>随机种子<input id="seed" name="seed" type="text" value="polar-2026" maxlength="80"></label>
+</div><p class="muted" id="convention"></p><p class="muted">如果你说的“90°”是检偏器的角度，在这里选择 β=90° 及对应的波片行。参考格需有光，消光格不能确定整表尺度。</p></details>
+<div class="buttons"><button id="generate" class="primary" type="submit">生成两张表</button><button id="demo" type="button">演示数据</button></div>
+<p id="error" role="alert" hidden></p><p id="status" class="muted" role="status" aria-live="polite">目前是演示参数，可直接改成自己的参考值。</p>
+</form></section>
+<div id="results">
+<div class="toolbar"><p><strong>仿真数据</strong> · <span id="count">36 + 84 个功率值</span></p><div class="buttons"><button id="copy">复制两表</button><button id="csv">下载 CSV</button></div></div>
+<nav><a href="#table1">第一表 ↓</a><a href="#table2">第二表 ↓</a></nav>
+<section class="panel" id="table1"><h2>表 1 · 马吕斯定律</h2><p class="muted">θ=0°～350°，每隔10°；cos²θ 已重新计算。◆ 为输入参考点。</p><div id="malus-table" class="malus-grid"></div></section>
+<section class="panel" id="table2"><h2>表 2 · 波片实验</h2><p id="wave-caption" class="muted"></p><div id="wave-desktop" class="tablewrap desktop" tabindex="0" role="region" aria-label="第二表完整数据"></div><div id="wave-mobile" class="mobile"></div></section>
+</div>
+<details class="notes"><summary>这两张表是怎样生成的</summary><p>按历届报告/处理稿 S244、S255、S047、S263 的实际两表版式制作，没有添加旋光实验表。第一表用马吕斯定律；第二表用理想四分之一波片的 Jones 模型，按你选择的参考格设置功率尺度。</p><p>完整版使用固定检偏参考方向；含360°版将零点设为消光；简表使用波片光轴参考，反映对应报告的方向趋势。不同角度约定的数值不能直接混用。参考点保持输入原值，其他数据为模型生成；可选高斯扰动用于仿真，负值截为0。</p><p>所有输出标注为仿真数据。计算在浏览器完成，输入不上传；最后一组参数保存在本设备。网页源码不含历届报告原文或个人信息。</p></details>
+<footer>光的偏振 · 仿真工具 <a href="https://github.com/d3519159-lab/polarization-simulator" target="_blank" rel="noopener">GitHub</a></footer>
+</main><noscript>请启用 JavaScript 运行仿真。</noscript><script type="module" src="./app.js"></script></body>
+</html>
